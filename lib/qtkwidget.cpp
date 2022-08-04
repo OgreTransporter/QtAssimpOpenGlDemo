@@ -12,6 +12,7 @@ namespace qtk
         , mDebugLogger(nullptr)
 #endif
     {
+        setFocusPolicy(Qt::StrongFocus);
     }
 
     void OpenGLWidget::paintGL()

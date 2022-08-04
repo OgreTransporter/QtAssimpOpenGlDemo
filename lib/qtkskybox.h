@@ -16,6 +16,7 @@ namespace qtk
     public:
         explicit Skybox(QOpenGLTexture* cubeMap, const QString& name, qtk::Shaders shaders);
         Skybox(QString right, QString top, QString front, QString left, QString bottom, QString back, const QString& name, qtk::Shaders shaders);
+        Skybox(QImage right, QImage top, QImage front, QImage left, QImage bottom, QImage back, const QString& name, qtk::Shaders shaders);
         ~Skybox();
 
         void draw();

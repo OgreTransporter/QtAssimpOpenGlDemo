@@ -16,6 +16,18 @@ namespace qtk
         init(shaders);
     }
 
+    Skybox::Skybox(QImage right, QImage top, QImage front, QImage left, QImage bottom, QImage back, const QString& name, qtk::Shaders shaders)
+        : mCubeMap(Texture::initCubeMap(
+            right.mirrored(), top,
+            front, left,
+            bottom, back)),
+        mVBO(QOpenGLBuffer::VertexBuffer),
+        mVertices(Cube(QTK_DRAW_ELEMENTS).vertices()),
+        mIndices(Cube(QTK_DRAW_ELEMENTS).indices())
+    {
+        init(shaders);
+    }
+
     Skybox::Skybox(QOpenGLTexture* cubeMap, const QString& name, qtk::Shaders shaders)
         : mCubeMap(cubeMap)
     {
