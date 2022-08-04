@@ -2,6 +2,7 @@
 #define QTKMODEL_H
 #include "qtkapi.h"
 #include "qtkmodelmesh.h"
+#include "qtkshaders.h"
 #include <QObject>
 #include <QOpenGLShaderProgram>
 
@@ -20,7 +21,7 @@ namespace qtk
         typedef QHash<QString, Model*> ModelManager;
 
     public:
-        Model(QString name, QString path, QString vertexShader, QString fragmentShader, QObject* parent = nullptr);
+        Model(QString name, QString path, Shaders shaders, QObject* parent = nullptr);
         ~Model();
 
         void draw();
@@ -71,8 +72,7 @@ namespace qtk
         ModelMesh::Textures mTexturesLoaded;
         std::vector<ModelMesh> mMeshes;
         QString mDirectory;
-        QString mVertexShader;
-        QString mFragmentShader;
+        Shaders mShaders;
         QString mName;
     };
 }

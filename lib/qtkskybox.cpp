@@ -4,7 +4,7 @@
 
 namespace qtk
 {
-    Skybox::Skybox(QString right, QString top, QString front, QString left, QString bottom, QString back, const QString& name, QString vertexShader, QString fragmentShader)
+    Skybox::Skybox(QString right, QString top, QString front, QString left, QString bottom, QString back, const QString& name, qtk::Shaders shaders)
         : mCubeMap(Texture::initCubeMap(
             QImage(right).mirrored(), QImage(top),
             QImage(front), QImage(left),
@@ -13,13 +13,13 @@ namespace qtk
         mVertices(Cube(QTK_DRAW_ELEMENTS).vertices()),
         mIndices(Cube(QTK_DRAW_ELEMENTS).indices())
     {
-        init(vertexShader, fragmentShader);
+        init(shaders);
     }
 
-    Skybox::Skybox(QOpenGLTexture* cubeMap, const QString& name, QString vertexShader, QString fragmentShader)
+    Skybox::Skybox(QOpenGLTexture* cubeMap, const QString& name, qtk::Shaders shaders)
         : mCubeMap(cubeMap)
     {
-        init(vertexShader, fragmentShader);
+        init(shaders);
     }
 
     Skybox::~Skybox()
@@ -58,14 +58,14 @@ namespace qtk
      * Private Member Functions
      ******************************************************************************/
 
-    void Skybox::init(QString vertexShader, QString fragmentShader)
+    void Skybox::init(qtk::Shaders shaders)
     {
         initializeOpenGLFunctions();
 
         // Set up shader program
         mProgram.create();
-        mProgram.addShaderFromSourceFile(QOpenGLShader::Vertex, vertexShader);
-        mProgram.addShaderFromSourceFile(QOpenGLShader::Fragment, fragmentShader);
+        mProgram.addShaderFromSourceCode(QOpenGLShader::Vertex, shaders.mVertexShaderText);
+        mProgram.addShaderFromSourceCode(QOpenGLShader::Fragment, shaders.mFragmentShaderText);
         mProgram.link();
         mProgram.bind();
 

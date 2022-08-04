@@ -12,11 +12,10 @@ namespace qtk
 {
     Model::ModelManager Model::mManager;
 
-    Model::Model(QString name, QString path, QString vertexShader, QString fragmentShader, QObject* parent)
+    Model::Model(QString name, QString path, Shaders shaders, QObject* parent)
         : QObject{ parent }
         , mName(name)
-        , mVertexShader(vertexShader)
-        , mFragmentShader(fragmentShader)
+        , mShaders(shaders)
     {
         loadModel(path);
     }
@@ -231,7 +230,7 @@ namespace qtk
             textures.insert(textures.end(), normalMaps.begin(), normalMaps.end());
         }
 
-        return ModelMesh(vertices, indices, textures, mVertexShader, mFragmentShader);
+        return ModelMesh(vertices, indices, textures, mShaders);
     }
 
     ModelMesh::Textures Model::loadMaterialTextures(aiMaterial* mat, aiTextureType type, const QString& typeName)

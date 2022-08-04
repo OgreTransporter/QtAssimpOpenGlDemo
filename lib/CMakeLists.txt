@@ -16,6 +16,7 @@ set(PUBLIC_HEADERS
     qtktexture.h
     qtkmodelmesh.h
     qtkobject.h
+    qtkshaders.h
 )
 set(SOURCE_FILES
     qtkwidget.cpp
@@ -32,6 +33,7 @@ set(SOURCE_FILES
     qtktexture.cpp
     qtkmodelmesh.cpp
     qtkobject.cpp
+    qtkshaders.cpp
 )
 
 qt_add_library(qtk 

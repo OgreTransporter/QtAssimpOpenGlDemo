@@ -7,20 +7,19 @@ namespace qtk
     // Static QHash that holds all MeshRenderer instances using their mName as keys
     MeshRenderer::MeshManager MeshRenderer::sInstances;
 
-    MeshRenderer::MeshRenderer(QString name, Vertices vertices, Indices indices, const QString& vert, const QString& frag, DrawMode mode)
-        : MeshRenderer(name, ShapeBase(mode, vertices, indices), vert, frag)
+    MeshRenderer::MeshRenderer(QString name, Vertices vertices, Indices indices, Shaders shaders, DrawMode mode)
+        : MeshRenderer(name, ShapeBase(mode, vertices, indices), shaders)
     {
     }
     
-    MeshRenderer::MeshRenderer(QString name, const QString& vert, const QString& frag)
-        : MeshRenderer(name, Cube(QTK_DRAW_ELEMENTS), vert, frag)
+    MeshRenderer::MeshRenderer(QString name, Shaders shaders)
+        : MeshRenderer(name, Cube(QTK_DRAW_ELEMENTS), shaders)
     {
     }
 
-    MeshRenderer::MeshRenderer(QString name, const ShapeBase& shape, const QString& vert, const QString& frag)
+    MeshRenderer::MeshRenderer(QString name, const ShapeBase& shape, Shaders shaders)
         : Object(name, shape)
-        , mVertexShader(vert)
-        , mFragmentShader(frag)
+        , mShaders(shaders)
         , mDrawType(GL_TRIANGLES)
         , mHasTexture(false)
     {
@@ -59,10 +58,8 @@ namespace qtk
         mVAO.bind();
 
         mProgram.create();
-        mProgram.addShaderFromSourceFile(QOpenGLShader::Vertex,
-            mVertexShader);
-        mProgram.addShaderFromSourceFile(QOpenGLShader::Fragment,
-            mFragmentShader);
+        mProgram.addShaderFromSourceCode(QOpenGLShader::Vertex, mShaders.mVertexShaderText);
+        mProgram.addShaderFromSourceCode(QOpenGLShader::Fragment, mShaders.mFragmentShaderText);
         mProgram.link();
         mProgram.bind();
 
@@ -124,20 +121,9 @@ namespace qtk
         mDrawType = drawType;
     }
 
-    void MeshRenderer::setShaderVertex(const QString& vert)
+    void MeshRenderer::setShaders(Shaders shaders)
     {
-        mVertexShader = vert;
-    }
-    
-    void MeshRenderer::setShaderFragment(const QString& frag)
-    {
-        mFragmentShader = frag;
-    }
-
-    void MeshRenderer::setShaders(const QString& vert, const QString& frag)
-    {
-        mVertexShader = vert;
-        mFragmentShader = frag;
+        mShaders = shaders;
     }
 
     void MeshRenderer::setUniformMVP(QString model, QString view, QString projection)

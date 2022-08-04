@@ -3,6 +3,7 @@
 #include "qtkapi.h"
 #include "qtkobject.h"
 #include "qtkmesh.h"
+#include "qtkshaders.h"
 
 namespace qtk
 {
@@ -14,10 +15,10 @@ namespace qtk
 
     public:
         // Delegate constructors
-        MeshRenderer(QString name, Vertices vertices, Indices indices, const QString& vert, const QString& frag, DrawMode mode = QTK_DRAW_ARRAYS);
-        MeshRenderer(QString name, const QString& vert, const QString& frag);
+        MeshRenderer(QString name, Vertices vertices, Indices indices, Shaders shaders, DrawMode mode = QTK_DRAW_ARRAYS);
+        MeshRenderer(QString name, Shaders shaders);
         // Constructor
-        MeshRenderer(QString name, const ShapeBase& shape, const QString& vert, const QString& frag);
+        MeshRenderer(QString name, const ShapeBase& shape, Shaders shaders);
         ~MeshRenderer();
 
         // Retrieve a mesh by name stored within a static QHash
@@ -30,9 +31,7 @@ namespace qtk
         void setDrawType(int drawType);
 
         // Shader settings
-        void setShaderVertex(const QString& vert);
-        void setShaderFragment(const QString& frag);
-        void setShaders(const QString& vert, const QString& frag);
+        void setShaders(Shaders shaders);
 
         template <typename T>
         inline void setUniform(int location, T value)
@@ -66,8 +65,7 @@ namespace qtk
 
         int mDrawType;
         bool mHasTexture;
-        QString mVertexShader;
-        QString mFragmentShader;
+        Shaders mShaders;
     };
 }
 #endif // QTKMESHRENDERER_H

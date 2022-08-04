@@ -2,6 +2,7 @@
 #define QTKMODELMESH_H
 #include "qtkapi.h"
 #include "qtktransform3d.h"
+#include "qtkshaders.h"
 #include <QOpenGLFunctions>
 #include <QOpenGLShaderProgram>
 
@@ -38,14 +39,14 @@ namespace qtk
 
     public:
         // Constructors, Destructors
-        ModelMesh(Vertices vertices, Indices indices, Textures textures, QString vertexShader, QString fragmentShader);
+        ModelMesh(Vertices vertices, Indices indices, Textures textures, qtk::Shaders shaders);
         ~ModelMesh();
 
         void draw();
         void draw(QOpenGLShaderProgram& shader);
 
     private:
-        void initMesh(QString vert, QString frag);
+        void initMesh(qtk::Shaders shaders);
 
     private:
         // ModelMesh Private Members

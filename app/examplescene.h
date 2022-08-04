@@ -1,6 +1,7 @@
 #ifndef EXAMPLESCENE_H
 #define EXAMPLESCENE_H
 #include <qtkscene.h>
+#include <qtkshaders.h>
 
 class ExampleScene : public qtk::Scene
 {
@@ -12,6 +13,10 @@ public:
     virtual void update();
 
 private:
+    qtk::Shaders loadShader(QString vert, QString frag);
+    qtk::Shaders loadShader(QString name);
+
+private:
     QString mRessourcePath;
 
     qtk::MeshRenderer* mTestPhong;
@@ -19,10 +24,8 @@ private:
     qtk::MeshRenderer* mTestDiffuse;
     qtk::MeshRenderer* mTestAmbient;
 
-    QString mDefaultMeshRendererVert;
-    QString mDefaultMeshRendererFrag;
-    QString mDefaultModelVert;
-    QString mDefaultModelFrag;
+    qtk::Shaders mDefaultMeshRendererShader;
+    qtk::Shaders mDefaultModelShader;
 };
 
 #endif // EXAMPLESCENE_H

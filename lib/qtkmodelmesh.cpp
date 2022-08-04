@@ -5,7 +5,7 @@
 
 namespace qtk
 {
-    ModelMesh::ModelMesh(Vertices vertices, Indices indices, Textures textures, QString vertexShader, QString fragmentShader)
+    ModelMesh::ModelMesh(Vertices vertices, Indices indices, Textures textures, qtk::Shaders shaders)
         : mProgram(new QOpenGLShaderProgram)
         , mVAO(new QOpenGLVertexArrayObject)
         , mVBO(new QOpenGLBuffer(QOpenGLBuffer::VertexBuffer))
@@ -14,7 +14,7 @@ namespace qtk
         , mIndices(std::move(indices))
         , mTextures(std::move(textures))
     {
-        initMesh(vertexShader, fragmentShader);
+        initMesh(shaders);
     }
 
     ModelMesh::~ModelMesh()
@@ -72,7 +72,7 @@ namespace qtk
         glActiveTexture(GL_TEXTURE0);
     }
 
-    void ModelMesh::initMesh(QString vert, QString frag)
+    void ModelMesh::initMesh(qtk::Shaders shaders)
     {
         initializeOpenGLFunctions();
 
@@ -96,8 +96,8 @@ namespace qtk
         mEBO->release();
 
         // Load and link shaders
-        mProgram->addShaderFromSourceFile(QOpenGLShader::Vertex, vert);
-        mProgram->addShaderFromSourceFile(QOpenGLShader::Fragment, frag);
+        mProgram->addShaderFromSourceCode(QOpenGLShader::Vertex, shaders.mVertexShaderText);
+        mProgram->addShaderFromSourceCode(QOpenGLShader::Fragment, shaders.mFragmentShaderText);
         mProgram->link();
         mProgram->bind();
 
